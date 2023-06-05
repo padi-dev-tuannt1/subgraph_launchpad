@@ -3,99 +3,73 @@ import {
   FeeAmountUpdated as FeeAmountUpdatedEvent,
   FeeWalletUpdated as FeeWalletUpdatedEvent,
   IDOCreated as IDOCreatedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
   TokenFeeUpdated as TokenFeeUpdatedEvent
 } from "../generated/IDOFactory/IDOFactory"
 import {
-  BurnPercentUpdated,
-  FeeAmountUpdated,
-  FeeWalletUpdated,
-  IDOCreated,
-  OwnershipTransferred,
-  TokenFeeUpdated
+  IDOCreated,IDOFactory
 } from "../generated/schema"
+import { IDO_FACTORY_ADDRESS } from "./helper";
+
 
 export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
-  let entity = new BurnPercentUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.newBurnPercent = event.params.newBurnPercent
-  entity.divider = event.params.divider
+  let idofactory = IDOFactory.load(event.address.toHex())
+  if (idofactory == null) {
+    idofactory = new IDOFactory(event.address.toHex());
+    idofactory.id = event.address.toHex();
+  }
+  idofactory.burnPercent = event.params.newBurnPercent;
+  idofactory.divider = event.params.divider
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  idofactory.save();
 }
 
 export function handleFeeAmountUpdated(event: FeeAmountUpdatedEvent): void {
-  let entity = new FeeAmountUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.newFeeAmount = event.params.newFeeAmount
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  let idofactory = IDOFactory.load(event.address.toHex())
+  if (idofactory == null) {
+    idofactory = new IDOFactory(event.address.toHex());
+    idofactory.id = event.address.toHex();
+  }
+  idofactory.feeAmount = event.params.newFeeAmount;
+  idofactory.save();
 }
 
 export function handleFeeWalletUpdated(event: FeeWalletUpdatedEvent): void {
-  let entity = new FeeWalletUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.newFeeWallet = event.params.newFeeWallet
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  let idofactory = IDOFactory.load(event.address.toHex())
+  if (idofactory == null) {
+    idofactory = new IDOFactory(event.address.toHex());
+    idofactory.id = event.address.toHex();
+  }
+  idofactory.feeWallet = event.params.newFeeWallet;
+  idofactory.save();
 }
 
 export function handleIDOCreated(event: IDOCreatedEvent): void {
-  let entity = new IDOCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.idoPool = event.params.idoPool
-  entity.rewardToken = event.params.rewardToken
-  entity.tokenURI = event.params.tokenURI
+  let idocreated = new IDOCreated(event.transaction.hash.toHex());
+  idocreated.owner = event.params.owner;
+  idocreated.idoPool = event.params.idoPool;
+  idocreated.rewardToken = event.params.rewardToken;
+  idocreated.tokenURI = event.params.tokenURI;
+  idocreated.createdAt = event.block.timestamp;
+  let idofactory = IDOFactory.load(event.address.toHex())
+  if (idofactory == null) {
+    idofactory = new IDOFactory(event.address.toHex());
+    idofactory.id = event.address.toHex();
+  }
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  idocreated.IDOFactory = idofactory.id;
+  // Save the entities
+  idocreated.save();
+  idofactory.save();
 }
 
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
 
 export function handleTokenFeeUpdated(event: TokenFeeUpdatedEvent): void {
-  let entity = new TokenFeeUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.newFeeToken = event.params.newFeeToken
+  let idofactory = IDOFactory.load(event.address.toHex())
+  if (idofactory == null) {
+    idofactory = new IDOFactory(event.address.toHex());
+    idofactory.id = event.address.toHex();
+  }
+  idofactory.feeToken = event.params.newFeeToken;
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  idofactory.save();
 }

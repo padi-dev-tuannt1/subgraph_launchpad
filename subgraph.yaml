@@ -37,3 +37,27 @@ dataSources:
         - event: TokenFeeUpdated(address)
           handler: handleTokenFeeUpdated
       file: ./src/ido-factory.ts
+templates:
+  - kind: ethereum/contract
+    name: IDOPool
+    network: mainnet
+    source:
+      abi: IDOPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - TokensDebt
+        - TokensWithdrawn
+      abis:
+        - name: IDOPool
+          file: ./abis/IDOPool.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TokensDebt(indexed address,uint256,uint256)
+          handler: handleTokensDebt
+        - event: TokensWithdrawn(indexed address,uint256)
+          handler: handleTokensWithdrawn
