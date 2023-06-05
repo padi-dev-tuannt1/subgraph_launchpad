@@ -1,0 +1,52 @@
+type BurnPercentUpdated @entity(immutable: true) {
+  id: Bytes!
+  newBurnPercent: BigInt! # uint256
+  divider: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeeAmountUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFeeAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type FeeWalletUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFeeWallet: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type IDOCreated @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  idoPool: Bytes! # address
+  rewardToken: Bytes! # address
+  tokenURI: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TokenFeeUpdated @entity(immutable: true) {
+  id: Bytes!
+  newFeeToken: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
