@@ -6,9 +6,10 @@ import {
   TokenFeeUpdated as TokenFeeUpdatedEvent
 } from "../generated/IDOFactory/IDOFactory"
 import {
-  IDOCreated,IDOFactory
+  IDOCreated, IDOFactory
 } from "../generated/schema"
-import { IDO_FACTORY_ADDRESS } from "./helper";
+
+import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchFeeAmount, fetchFeeToken, fetchFeeWallet } from "./helper";
 
 
 export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
@@ -18,7 +19,6 @@ export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
     idofactory.id = event.address.toHex();
   }
   idofactory.burnPercent = event.params.newBurnPercent;
-  idofactory.divider = event.params.divider
 
   idofactory.save();
 }
@@ -51,9 +51,14 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
   idocreated.tokenURI = event.params.tokenURI;
   idocreated.createdAt = event.block.timestamp;
   let idofactory = IDOFactory.load(event.address.toHex())
+
   if (idofactory == null) {
     idofactory = new IDOFactory(event.address.toHex());
     idofactory.id = event.address.toHex();
+    idofactory.feeToken = fetchFeeToken(event.address)
+    idofactory.feeAmount = fetchFeeAmount(event.address)
+    idofactory.feeWallet = fetchFeeWallet(event.address)
+    idofactory.burnPercent = fetchBurnPercent(event.address)
   }
 
   idocreated.IDOFactory = idofactory.id;
