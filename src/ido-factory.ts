@@ -6,10 +6,11 @@ import {
   TokenFeeUpdated as TokenFeeUpdatedEvent
 } from "../generated/IDOFactory/IDOFactory"
 import {
-  IDOCreated, IDOFactory
+  FinInfo,
+  IDOCreated, IDOFactory, IDOPool
 } from "../generated/schema"
 
-import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchFeeAmount, fetchFeeToken, fetchFeeWallet } from "./helper";
+import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH } from "./helper";
 
 
 export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
@@ -62,6 +63,22 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
   }
 
   idocreated.IDOFactory = idofactory.id;
+  let idoPool = IDOPool.load(event.address.toHex())
+  if(idoPool == null){
+    idoPool = new IDOPool(event.address.toHex())
+    idoPool.id = event.address.toHex()
+    idoPool.rewardToken = fetchRewardToken(event.params.idoPool)
+    idoPool.metadataURL = fetchMetadataURL(event.params.idoPool)
+    idoPool.finInfo = fetchFinInfo(event.params.idoPool)
+    idoPool.timestamps = fetchTimestamps(event.params.idoPool)
+    idoPool.dexInfo = fetchDexInfo(event.params.idoPool)
+    idoPool.lockerFactory = fetchLockerFactory(event.params.idoPool)
+    idoPool.totalInvestedETH = fetchTotalInvestedETH(event.params.idoPool)
+    idoPool.tokensForDistribution = fetchTokensForDistribution(event.params.idoPool)
+    idoPool.distributedTokens = fetchDistributedTokens(event.params.idoPool)
+    idoPool.distributed = fetchDistributed(event.params.idoPool)
+  }
+  
   // Save the entities
   idocreated.save();
   idofactory.save();
