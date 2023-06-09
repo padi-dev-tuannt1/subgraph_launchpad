@@ -46,6 +46,7 @@ export function fetchTimestamps(tokenAddress:Address): IDOPool__timestampsResult
 	let timestampsResult = idoPoolContract.try_timestamps()
 	return timestampsResult.value
 }
+
 export function fetchDexInfo(tokenAddress:Address): IDOPool__dexInfoResult{
 	let idoPoolContract = IDOPoolContract.bind(tokenAddress)
 	let dexInfoResult = idoPoolContract.try_dexInfo()

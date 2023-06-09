@@ -272,6 +272,186 @@ export class ConstructorCall__Outputs {
   }
 }
 
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetFeeTokenCall extends ethereum.Call {
+  get inputs(): SetFeeTokenCall__Inputs {
+    return new SetFeeTokenCall__Inputs(this);
+  }
+
+  get outputs(): SetFeeTokenCall__Outputs {
+    return new SetFeeTokenCall__Outputs(this);
+  }
+}
+
+export class SetFeeTokenCall__Inputs {
+  _call: SetFeeTokenCall;
+
+  constructor(call: SetFeeTokenCall) {
+    this._call = call;
+  }
+
+  get _newFeeToken(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetFeeTokenCall__Outputs {
+  _call: SetFeeTokenCall;
+
+  constructor(call: SetFeeTokenCall) {
+    this._call = call;
+  }
+}
+
+export class SetFeeAmountCall extends ethereum.Call {
+  get inputs(): SetFeeAmountCall__Inputs {
+    return new SetFeeAmountCall__Inputs(this);
+  }
+
+  get outputs(): SetFeeAmountCall__Outputs {
+    return new SetFeeAmountCall__Outputs(this);
+  }
+}
+
+export class SetFeeAmountCall__Inputs {
+  _call: SetFeeAmountCall;
+
+  constructor(call: SetFeeAmountCall) {
+    this._call = call;
+  }
+
+  get _newFeeAmount(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class SetFeeAmountCall__Outputs {
+  _call: SetFeeAmountCall;
+
+  constructor(call: SetFeeAmountCall) {
+    this._call = call;
+  }
+}
+
+export class SetFeeWalletCall extends ethereum.Call {
+  get inputs(): SetFeeWalletCall__Inputs {
+    return new SetFeeWalletCall__Inputs(this);
+  }
+
+  get outputs(): SetFeeWalletCall__Outputs {
+    return new SetFeeWalletCall__Outputs(this);
+  }
+}
+
+export class SetFeeWalletCall__Inputs {
+  _call: SetFeeWalletCall;
+
+  constructor(call: SetFeeWalletCall) {
+    this._call = call;
+  }
+
+  get _newFeeWallet(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class SetFeeWalletCall__Outputs {
+  _call: SetFeeWalletCall;
+
+  constructor(call: SetFeeWalletCall) {
+    this._call = call;
+  }
+}
+
+export class SetBurnPercentCall extends ethereum.Call {
+  get inputs(): SetBurnPercentCall__Inputs {
+    return new SetBurnPercentCall__Inputs(this);
+  }
+
+  get outputs(): SetBurnPercentCall__Outputs {
+    return new SetBurnPercentCall__Outputs(this);
+  }
+}
+
+export class SetBurnPercentCall__Inputs {
+  _call: SetBurnPercentCall;
+
+  constructor(call: SetBurnPercentCall) {
+    this._call = call;
+  }
+
+  get _newBurnPercent(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get _newDivider(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class SetBurnPercentCall__Outputs {
+  _call: SetBurnPercentCall;
+
+  constructor(call: SetBurnPercentCall) {
+    this._call = call;
+  }
+}
+
 export class CreateIDOCall extends ethereum.Call {
   get inputs(): CreateIDOCall__Inputs {
     return new CreateIDOCall__Inputs(this);
@@ -383,185 +563,5 @@ export class CreateIDOCall_dexInfoStruct extends ethereum.Tuple {
 
   get weth(): Address {
     return this[2].toAddress();
-  }
-}
-
-export class RenounceOwnershipCall extends ethereum.Call {
-  get inputs(): RenounceOwnershipCall__Inputs {
-    return new RenounceOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): RenounceOwnershipCall__Outputs {
-    return new RenounceOwnershipCall__Outputs(this);
-  }
-}
-
-export class RenounceOwnershipCall__Inputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class RenounceOwnershipCall__Outputs {
-  _call: RenounceOwnershipCall;
-
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class SetBurnPercentCall extends ethereum.Call {
-  get inputs(): SetBurnPercentCall__Inputs {
-    return new SetBurnPercentCall__Inputs(this);
-  }
-
-  get outputs(): SetBurnPercentCall__Outputs {
-    return new SetBurnPercentCall__Outputs(this);
-  }
-}
-
-export class SetBurnPercentCall__Inputs {
-  _call: SetBurnPercentCall;
-
-  constructor(call: SetBurnPercentCall) {
-    this._call = call;
-  }
-
-  get _newBurnPercent(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-
-  get _newDivider(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class SetBurnPercentCall__Outputs {
-  _call: SetBurnPercentCall;
-
-  constructor(call: SetBurnPercentCall) {
-    this._call = call;
-  }
-}
-
-export class SetFeeAmountCall extends ethereum.Call {
-  get inputs(): SetFeeAmountCall__Inputs {
-    return new SetFeeAmountCall__Inputs(this);
-  }
-
-  get outputs(): SetFeeAmountCall__Outputs {
-    return new SetFeeAmountCall__Outputs(this);
-  }
-}
-
-export class SetFeeAmountCall__Inputs {
-  _call: SetFeeAmountCall;
-
-  constructor(call: SetFeeAmountCall) {
-    this._call = call;
-  }
-
-  get _newFeeAmount(): BigInt {
-    return this._call.inputValues[0].value.toBigInt();
-  }
-}
-
-export class SetFeeAmountCall__Outputs {
-  _call: SetFeeAmountCall;
-
-  constructor(call: SetFeeAmountCall) {
-    this._call = call;
-  }
-}
-
-export class SetFeeTokenCall extends ethereum.Call {
-  get inputs(): SetFeeTokenCall__Inputs {
-    return new SetFeeTokenCall__Inputs(this);
-  }
-
-  get outputs(): SetFeeTokenCall__Outputs {
-    return new SetFeeTokenCall__Outputs(this);
-  }
-}
-
-export class SetFeeTokenCall__Inputs {
-  _call: SetFeeTokenCall;
-
-  constructor(call: SetFeeTokenCall) {
-    this._call = call;
-  }
-
-  get _newFeeToken(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetFeeTokenCall__Outputs {
-  _call: SetFeeTokenCall;
-
-  constructor(call: SetFeeTokenCall) {
-    this._call = call;
-  }
-}
-
-export class SetFeeWalletCall extends ethereum.Call {
-  get inputs(): SetFeeWalletCall__Inputs {
-    return new SetFeeWalletCall__Inputs(this);
-  }
-
-  get outputs(): SetFeeWalletCall__Outputs {
-    return new SetFeeWalletCall__Outputs(this);
-  }
-}
-
-export class SetFeeWalletCall__Inputs {
-  _call: SetFeeWalletCall;
-
-  constructor(call: SetFeeWalletCall) {
-    this._call = call;
-  }
-
-  get _newFeeWallet(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class SetFeeWalletCall__Outputs {
-  _call: SetFeeWalletCall;
-
-  constructor(call: SetFeeWalletCall) {
-    this._call = call;
-  }
-}
-
-export class TransferOwnershipCall extends ethereum.Call {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
-  }
-}
-
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-
-  get newOwner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
   }
 }

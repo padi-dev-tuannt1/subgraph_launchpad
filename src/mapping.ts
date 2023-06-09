@@ -1,8 +1,11 @@
 import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { IDOPool, UserInfo } from "../generated/schema";
 import {
+  ClaimCall,
+  RefundCall,
   TokensDebt as TokensDebtEvent,
-  TokensWithdrawn as TokensWithdrawnEvent
+  TokensWithdrawn as TokensWithdrawnEvent,
+  WithdrawETHCall
 } from "../generated/templates/IDOPool/IDOPool"
 export function handleTokensDebt(event: TokensDebtEvent): void {
 
@@ -33,5 +36,21 @@ export function handleTokensWithdrawn(event: TokensWithdrawnEvent): void {
 
     userInfo.save();
     idoPool.save();
+  }
+}
+export function handleRefund(call:RefundCall): void{
+  let userInfo = UserInfo.load(call.from.toHex())
+  if(userInfo !== null){
+    userInfo.debt = BigInt.fromI32(0)
+    userInfo.totalInvestedETH = BigInt.fromI32(0)
+    userInfo.total = BigInt.fromI32(0)
+    userInfo.save()
+  }
+}
+export function handleWithDrawETH(call: WithdrawETHCall): void{
+  let idoPool = IDOPool.load(call.to.toHex())
+  if(idoPool !== null){
+    idoPool.distributed = true
+    idoPool.save()
   }
 }
