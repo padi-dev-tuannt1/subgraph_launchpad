@@ -11,6 +11,7 @@ import {
   FinInfo,
   IDOCreated, IDOFactory, IDOPool, Timestamps
 } from "../generated/schema"
+import { IDOPool as IDOPoolTemplate } from "../generated/templates";
 
 import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH } from "./helper";
 
@@ -66,8 +67,10 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
   }
 
   idocreated.IDOFactory = idofactory.id;
+  
   let idoPool = IDOPool.load(event.params.idoPool.toHex())
   if(idoPool == null){
+    IDOPoolTemplate.create(event.params.idoPool)
     idoPool = new IDOPool(event.params.idoPool.toHex())
     idoPool.id = event.params.idoPool.toHex()
     idoPool.rewardToken = fetchRewardToken(event.params.idoPool)
