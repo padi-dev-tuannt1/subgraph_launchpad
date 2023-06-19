@@ -32,6 +32,11 @@ export function fetchRewardToken(tokenAddress:Address): Address{
 	let rewardTokenResult = idoPoolContract.try_rewardToken()
 	return rewardTokenResult.value
 }
+export function fetchUnsoldToken(tokenAddress:Address): BigInt{
+	let idoPoolContract = IDOPoolContract.bind(tokenAddress)
+	let unsoldTokenResult = idoPoolContract.try_getNotSoldToken()
+	return unsoldTokenResult.value
+}
 export function fetchMetadataURL(tokenAddress:Address): string{
 	let idoPoolContract = IDOPoolContract.bind(tokenAddress)
 	let metadataURLResult = idoPoolContract.try_metadataURL()

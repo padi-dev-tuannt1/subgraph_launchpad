@@ -68,6 +68,9 @@ contract IDOPool is Ownable, ReentrancyGuard {
     );
 
     event TokensWithdrawn(address indexed holder, uint256 amount);
+    event WithdrawNotSoldToken(address owner, uint256 amount);
+    event WithdrawETH(address owner,bool distributed);
+    event RefundUser(address user,UserInfo userInfo);
 
     constructor(
         ERC20 _rewardToken,
@@ -145,7 +148,7 @@ contract IDOPool is Ownable, ReentrancyGuard {
 
         (bool success, ) = msg.sender.call{value: _amount}("");
         require(success, "Transfer failed.");
-
+        emit RefundUser(msg.sender, user);
     }
 
     /// @dev Allows to claim tokens for the specific user.
@@ -233,6 +236,7 @@ contract IDOPool is Ownable, ReentrancyGuard {
         }
 
         distributed = true;
+        emit WithdrawETH(msg.sender, distributed);
     }
 
      function withdrawNotSoldTokens() external onlyOwner {
@@ -241,6 +245,7 @@ contract IDOPool is Ownable, ReentrancyGuard {
         uint256 balance = getNotSoldToken();
         require(balance > 0, "The IDO pool has not unsold tokens.");
         rewardToken.safeTransfer(msg.sender, balance);
+        emit WithdrawNotSoldToken(msg.sender, balance);
     }
 
     function getNotSoldToken() public view returns(uint256){

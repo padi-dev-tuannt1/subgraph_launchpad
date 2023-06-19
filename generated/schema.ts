@@ -311,6 +311,23 @@ export class IDOPool extends Entity {
     }
   }
 
+  get unsold(): BigInt | null {
+    let value = this.get("unsold");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set unsold(value: BigInt | null) {
+    if (!value) {
+      this.unset("unsold");
+    } else {
+      this.set("unsold", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
   get finInfo(): string {
     let value = this.get("finInfo");
     if (!value || value.kind == ValueKind.NULL) {

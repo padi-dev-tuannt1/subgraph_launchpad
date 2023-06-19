@@ -23,6 +23,7 @@ type IDOPool @entity {
   owner: Bytes! # address
   rewardToken: Bytes! # address
   metadataURL: String
+  unsold: BigInt
 
   finInfo: FinInfo!
   timestamps: Timestamps!

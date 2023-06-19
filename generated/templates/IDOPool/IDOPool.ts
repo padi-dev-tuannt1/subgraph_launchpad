@@ -32,6 +32,24 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class RefundUser extends ethereum.Event {
+  get params(): RefundUser__Params {
+    return new RefundUser__Params(this);
+  }
+}
+
+export class RefundUser__Params {
+  _event: RefundUser;
+
+  constructor(event: RefundUser) {
+    this._event = event;
+  }
+
+  get user(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class TokensDebt extends ethereum.Event {
   get params(): TokensDebt__Params {
     return new TokensDebt__Params(this);
@@ -72,6 +90,50 @@ export class TokensWithdrawn__Params {
   }
 
   get holder(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get amount(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+}
+
+export class WithdrawETH extends ethereum.Event {
+  get params(): WithdrawETH__Params {
+    return new WithdrawETH__Params(this);
+  }
+}
+
+export class WithdrawETH__Params {
+  _event: WithdrawETH;
+
+  constructor(event: WithdrawETH) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get distributed(): boolean {
+    return this._event.parameters[1].value.toBoolean();
+  }
+}
+
+export class WithdrawNotSoldToken extends ethereum.Event {
+  get params(): WithdrawNotSoldToken__Params {
+    return new WithdrawNotSoldToken__Params(this);
+  }
+}
+
+export class WithdrawNotSoldToken__Params {
+  _event: WithdrawNotSoldToken;
+
+  constructor(event: WithdrawNotSoldToken) {
+    this._event = event;
+  }
+
+  get owner(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
@@ -376,6 +438,29 @@ export class IDOPool extends ethereum.SmartContract {
     );
   }
 
+  getNotSoldToken(): BigInt {
+    let result = super.call(
+      "getNotSoldToken",
+      "getNotSoldToken():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_getNotSoldToken(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "getNotSoldToken",
+      "getNotSoldToken():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
   lockerFactory(): Address {
     let result = super.call("lockerFactory", "lockerFactory():(address)", []);
 
@@ -551,29 +636,6 @@ export class IDOPool extends ethereum.SmartContract {
       )
     );
   }
-
-  getNotSoldToken(): BigInt {
-    let result = super.call(
-      "getNotSoldToken",
-      "getNotSoldToken():(uint256)",
-      []
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_getNotSoldToken(): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "getNotSoldToken",
-      "getNotSoldToken():(uint256)",
-      []
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
 }
 
 export class ConstructorCall extends ethereum.Call {
@@ -690,140 +752,28 @@ export class ConstructorCall_dexInfoStruct extends ethereum.Tuple {
   }
 }
 
-export class RenounceOwnershipCall extends ethereum.Call {
-  get inputs(): RenounceOwnershipCall__Inputs {
-    return new RenounceOwnershipCall__Inputs(this);
+export class ClaimCall extends ethereum.Call {
+  get inputs(): ClaimCall__Inputs {
+    return new ClaimCall__Inputs(this);
   }
 
-  get outputs(): RenounceOwnershipCall__Outputs {
-    return new RenounceOwnershipCall__Outputs(this);
+  get outputs(): ClaimCall__Outputs {
+    return new ClaimCall__Outputs(this);
   }
 }
 
-export class RenounceOwnershipCall__Inputs {
-  _call: RenounceOwnershipCall;
+export class ClaimCall__Inputs {
+  _call: ClaimCall;
 
-  constructor(call: RenounceOwnershipCall) {
+  constructor(call: ClaimCall) {
     this._call = call;
   }
 }
 
-export class RenounceOwnershipCall__Outputs {
-  _call: RenounceOwnershipCall;
+export class ClaimCall__Outputs {
+  _call: ClaimCall;
 
-  constructor(call: RenounceOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class TransferOwnershipCall extends ethereum.Call {
-  get inputs(): TransferOwnershipCall__Inputs {
-    return new TransferOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): TransferOwnershipCall__Outputs {
-    return new TransferOwnershipCall__Outputs(this);
-  }
-}
-
-export class TransferOwnershipCall__Inputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-
-  get newOwner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class TransferOwnershipCall__Outputs {
-  _call: TransferOwnershipCall;
-
-  constructor(call: TransferOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class SetMetadataURLCall extends ethereum.Call {
-  get inputs(): SetMetadataURLCall__Inputs {
-    return new SetMetadataURLCall__Inputs(this);
-  }
-
-  get outputs(): SetMetadataURLCall__Outputs {
-    return new SetMetadataURLCall__Outputs(this);
-  }
-}
-
-export class SetMetadataURLCall__Inputs {
-  _call: SetMetadataURLCall;
-
-  constructor(call: SetMetadataURLCall) {
-    this._call = call;
-  }
-
-  get _metadataURL(): string {
-    return this._call.inputValues[0].value.toString();
-  }
-}
-
-export class SetMetadataURLCall__Outputs {
-  _call: SetMetadataURLCall;
-
-  constructor(call: SetMetadataURLCall) {
-    this._call = call;
-  }
-}
-
-export class PayCall extends ethereum.Call {
-  get inputs(): PayCall__Inputs {
-    return new PayCall__Inputs(this);
-  }
-
-  get outputs(): PayCall__Outputs {
-    return new PayCall__Outputs(this);
-  }
-}
-
-export class PayCall__Inputs {
-  _call: PayCall;
-
-  constructor(call: PayCall) {
-    this._call = call;
-  }
-}
-
-export class PayCall__Outputs {
-  _call: PayCall;
-
-  constructor(call: PayCall) {
-    this._call = call;
-  }
-}
-
-export class RefundCall extends ethereum.Call {
-  get inputs(): RefundCall__Inputs {
-    return new RefundCall__Inputs(this);
-  }
-
-  get outputs(): RefundCall__Outputs {
-    return new RefundCall__Outputs(this);
-  }
-}
-
-export class RefundCall__Inputs {
-  _call: RefundCall;
-
-  constructor(call: RefundCall) {
-    this._call = call;
-  }
-}
-
-export class RefundCall__Outputs {
-  _call: RefundCall;
-
-  constructor(call: RefundCall) {
+  constructor(call: ClaimCall) {
     this._call = call;
   }
 }
@@ -858,28 +808,200 @@ export class ClaimForCall__Outputs {
   }
 }
 
-export class ClaimCall extends ethereum.Call {
-  get inputs(): ClaimCall__Inputs {
-    return new ClaimCall__Inputs(this);
+export class PayCall extends ethereum.Call {
+  get inputs(): PayCall__Inputs {
+    return new PayCall__Inputs(this);
   }
 
-  get outputs(): ClaimCall__Outputs {
-    return new ClaimCall__Outputs(this);
+  get outputs(): PayCall__Outputs {
+    return new PayCall__Outputs(this);
   }
 }
 
-export class ClaimCall__Inputs {
-  _call: ClaimCall;
+export class PayCall__Inputs {
+  _call: PayCall;
 
-  constructor(call: ClaimCall) {
+  constructor(call: PayCall) {
     this._call = call;
   }
 }
 
-export class ClaimCall__Outputs {
-  _call: ClaimCall;
+export class PayCall__Outputs {
+  _call: PayCall;
 
-  constructor(call: ClaimCall) {
+  constructor(call: PayCall) {
+    this._call = call;
+  }
+}
+
+export class RecoverWrongTokensCall extends ethereum.Call {
+  get inputs(): RecoverWrongTokensCall__Inputs {
+    return new RecoverWrongTokensCall__Inputs(this);
+  }
+
+  get outputs(): RecoverWrongTokensCall__Outputs {
+    return new RecoverWrongTokensCall__Outputs(this);
+  }
+}
+
+export class RecoverWrongTokensCall__Inputs {
+  _call: RecoverWrongTokensCall;
+
+  constructor(call: RecoverWrongTokensCall) {
+    this._call = call;
+  }
+
+  get _tokenAddress(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get _tokenAmount(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+}
+
+export class RecoverWrongTokensCall__Outputs {
+  _call: RecoverWrongTokensCall;
+
+  constructor(call: RecoverWrongTokensCall) {
+    this._call = call;
+  }
+}
+
+export class RefundCall extends ethereum.Call {
+  get inputs(): RefundCall__Inputs {
+    return new RefundCall__Inputs(this);
+  }
+
+  get outputs(): RefundCall__Outputs {
+    return new RefundCall__Outputs(this);
+  }
+}
+
+export class RefundCall__Inputs {
+  _call: RefundCall;
+
+  constructor(call: RefundCall) {
+    this._call = call;
+  }
+}
+
+export class RefundCall__Outputs {
+  _call: RefundCall;
+
+  constructor(call: RefundCall) {
+    this._call = call;
+  }
+}
+
+export class RefundTokensCall extends ethereum.Call {
+  get inputs(): RefundTokensCall__Inputs {
+    return new RefundTokensCall__Inputs(this);
+  }
+
+  get outputs(): RefundTokensCall__Outputs {
+    return new RefundTokensCall__Outputs(this);
+  }
+}
+
+export class RefundTokensCall__Inputs {
+  _call: RefundTokensCall;
+
+  constructor(call: RefundTokensCall) {
+    this._call = call;
+  }
+}
+
+export class RefundTokensCall__Outputs {
+  _call: RefundTokensCall;
+
+  constructor(call: RefundTokensCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall extends ethereum.Call {
+  get inputs(): RenounceOwnershipCall__Inputs {
+    return new RenounceOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): RenounceOwnershipCall__Outputs {
+    return new RenounceOwnershipCall__Outputs(this);
+  }
+}
+
+export class RenounceOwnershipCall__Inputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class RenounceOwnershipCall__Outputs {
+  _call: RenounceOwnershipCall;
+
+  constructor(call: RenounceOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class SetMetadataURLCall extends ethereum.Call {
+  get inputs(): SetMetadataURLCall__Inputs {
+    return new SetMetadataURLCall__Inputs(this);
+  }
+
+  get outputs(): SetMetadataURLCall__Outputs {
+    return new SetMetadataURLCall__Outputs(this);
+  }
+}
+
+export class SetMetadataURLCall__Inputs {
+  _call: SetMetadataURLCall;
+
+  constructor(call: SetMetadataURLCall) {
+    this._call = call;
+  }
+
+  get _metadataURL(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class SetMetadataURLCall__Outputs {
+  _call: SetMetadataURLCall;
+
+  constructor(call: SetMetadataURLCall) {
+    this._call = call;
+  }
+}
+
+export class TransferOwnershipCall extends ethereum.Call {
+  get inputs(): TransferOwnershipCall__Inputs {
+    return new TransferOwnershipCall__Inputs(this);
+  }
+
+  get outputs(): TransferOwnershipCall__Outputs {
+    return new TransferOwnershipCall__Outputs(this);
+  }
+}
+
+export class TransferOwnershipCall__Inputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+
+  get newOwner(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+}
+
+export class TransferOwnershipCall__Outputs {
+  _call: TransferOwnershipCall;
+
+  constructor(call: TransferOwnershipCall) {
     this._call = call;
   }
 }
@@ -932,66 +1054,6 @@ export class WithdrawNotSoldTokensCall__Outputs {
   _call: WithdrawNotSoldTokensCall;
 
   constructor(call: WithdrawNotSoldTokensCall) {
-    this._call = call;
-  }
-}
-
-export class RefundTokensCall extends ethereum.Call {
-  get inputs(): RefundTokensCall__Inputs {
-    return new RefundTokensCall__Inputs(this);
-  }
-
-  get outputs(): RefundTokensCall__Outputs {
-    return new RefundTokensCall__Outputs(this);
-  }
-}
-
-export class RefundTokensCall__Inputs {
-  _call: RefundTokensCall;
-
-  constructor(call: RefundTokensCall) {
-    this._call = call;
-  }
-}
-
-export class RefundTokensCall__Outputs {
-  _call: RefundTokensCall;
-
-  constructor(call: RefundTokensCall) {
-    this._call = call;
-  }
-}
-
-export class RecoverWrongTokensCall extends ethereum.Call {
-  get inputs(): RecoverWrongTokensCall__Inputs {
-    return new RecoverWrongTokensCall__Inputs(this);
-  }
-
-  get outputs(): RecoverWrongTokensCall__Outputs {
-    return new RecoverWrongTokensCall__Outputs(this);
-  }
-}
-
-export class RecoverWrongTokensCall__Inputs {
-  _call: RecoverWrongTokensCall;
-
-  constructor(call: RecoverWrongTokensCall) {
-    this._call = call;
-  }
-
-  get _tokenAddress(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _tokenAmount(): BigInt {
-    return this._call.inputValues[1].value.toBigInt();
-  }
-}
-
-export class RecoverWrongTokensCall__Outputs {
-  _call: RecoverWrongTokensCall;
-
-  constructor(call: RecoverWrongTokensCall) {
     this._call = call;
   }
 }

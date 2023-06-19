@@ -6,9 +6,9 @@ dataSources:
     name: IDOFactory
     network: chapel
     source:
-      address: "0xb983D772100d519b4e91C15EFF6a10764B601E6F"
+      address: "0x70F35367B03a110286b8c180d7c35f4f11C3B4b4"
       abi: IDOFactory
-      startBlock: 30705784
+      startBlock: 30831772
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -63,5 +63,11 @@ templates:
           handler: handleTokensDebt
         - event: TokensWithdrawn(indexed address,uint256)
           handler: handleTokensWithdrawn
+        - event: WithdrawNotSoldToken(address,uint256)
+          handler: handleWithdrawNotSoldToken
+        - event: RefundUser(address)
+          handler: handleRefundUser
+        - event: WithdrawETH(address,bool)
+          handler: handleWithdrawETH
      
 

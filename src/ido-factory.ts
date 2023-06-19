@@ -13,7 +13,7 @@ import {
 } from "../generated/schema"
 import { IDOPool as IDOPoolTemplate } from "../generated/templates";
 
-import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchOwner, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH } from "./helper";
+import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchOwner, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH, fetchUnsoldToken } from "./helper";
 
 
 export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
@@ -76,6 +76,7 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
     IDOPoolTemplate.create(event.params.idoPool)
     idoPool = new IDOPool(event.params.idoPool.toHex())
     idoPool.id = event.params.idoPool.toHex()
+    idoPool.unsold = fetchUnsoldToken(event.params.idoPool)
     idoPool.rewardToken = fetchRewardToken(event.params.idoPool)
     idoPool.metadataURL = fetchMetadataURL(event.params.idoPool)
     idoPool.owner = fetchOwner(event.params.idoPool)
