@@ -268,6 +268,19 @@ export class IDOPool extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get owner(): Bytes {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+
   get rewardToken(): Bytes {
     let value = this.get("rewardToken");
     if (!value || value.kind == ValueKind.NULL) {

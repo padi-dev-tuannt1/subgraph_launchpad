@@ -8,6 +8,7 @@ export function fetchFeeToken(tokenAddress: Address) : Address{
 
 	return feeTokenResult.value;
 }
+
 export function fetchFeeAmount(tokenAddress: Address) : BigInt{
     let contract = IDOFactoryContract.bind(tokenAddress);
 	let feeAmountResult = contract.try_feeAmount();
@@ -35,6 +36,11 @@ export function fetchMetadataURL(tokenAddress:Address): string{
 	let idoPoolContract = IDOPoolContract.bind(tokenAddress)
 	let metadataURLResult = idoPoolContract.try_metadataURL()
 	return metadataURLResult.value
+}
+export function fetchOwner(tokenAddress:Address): Address{
+	let idoPoolContract = IDOPoolContract.bind(tokenAddress)
+	let ownerResult = idoPoolContract.try_owner()
+	return ownerResult.value
 }
 export function fetchFinInfo(tokenAddress:Address): IDOPool__finInfoResult{
 	let idoPoolContract = IDOPoolContract.bind(tokenAddress)

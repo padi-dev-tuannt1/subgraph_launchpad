@@ -13,7 +13,7 @@ import {
 } from "../generated/schema"
 import { IDOPool as IDOPoolTemplate } from "../generated/templates";
 
-import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH } from "./helper";
+import { IDO_FACTORY_ADDRESS, fetchBurnPercent, fetchDexInfo, fetchDistributed, fetchDistributedTokens, fetchFeeAmount, fetchFeeToken, fetchFeeWallet, fetchFinInfo, fetchLockerFactory, fetchMetadataURL, fetchOwner, fetchRewardToken, fetchTimestamps, fetchTokensForDistribution, fetchTotalInvestedETH } from "./helper";
 
 
 export function handleBurnPercentUpdated(event: BurnPercentUpdatedEvent): void {
@@ -44,6 +44,9 @@ export function handleFeeWalletUpdated(event: FeeWalletUpdatedEvent): void {
     idofactory.id = event.address.toHex();
   }
   idofactory.feeWallet = event.params.newFeeWallet;
+  idofactory.feeToken = fetchFeeToken(event.address)
+  idofactory.feeAmount = fetchFeeAmount(event.address)
+  idofactory.burnPercent = fetchBurnPercent(event.address)
   idofactory.save();
 }
 
@@ -67,14 +70,15 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
   }
 
   idocreated.IDOFactory = idofactory.id;
-  
+
   let idoPool = IDOPool.load(event.params.idoPool.toHex())
-  if(idoPool == null){
+  if (idoPool == null) {
     IDOPoolTemplate.create(event.params.idoPool)
     idoPool = new IDOPool(event.params.idoPool.toHex())
     idoPool.id = event.params.idoPool.toHex()
     idoPool.rewardToken = fetchRewardToken(event.params.idoPool)
     idoPool.metadataURL = fetchMetadataURL(event.params.idoPool)
+    idoPool.owner = fetchOwner(event.params.idoPool)
 
     let finInfoResult = fetchFinInfo(event.params.idoPool)
     let finInfo = new FinInfo(event.params.idoPool.toHex())
@@ -94,7 +98,7 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
     timestamp.startTimestamp = timestampResult.getStartTimestamp()
     timestamp.endTimestamp = timestampResult.getEndTimestamp()
     timestamp.unlockTimestamp = timestampResult.getUnlockTimestamp()
-    timestamp.IDOPool =  idoPool.id
+    timestamp.IDOPool = idoPool.id
 
     let dexInfoResult = fetchDexInfo(event.params.idoPool)
     let dexInfo = new DEXInfo(event.params.idoPool.toHex())
@@ -112,13 +116,13 @@ export function handleIDOCreated(event: IDOCreatedEvent): void {
     idoPool.tokensForDistribution = fetchTokensForDistribution(event.params.idoPool)
     idoPool.distributedTokens = fetchDistributedTokens(event.params.idoPool)
     idoPool.distributed = fetchDistributed(event.params.idoPool)
-    
+
     finInfo.save()
     dexInfo.save()
     timestamp.save()
   }
-  
-  
+
+
   // Save the entities
   idoPool.save()
   idocreated.save();

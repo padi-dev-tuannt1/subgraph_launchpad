@@ -20,7 +20,7 @@ type IDOCreated @entity(immutable: true) {
 
 type IDOPool @entity {
   id: ID!
-
+  owner: Bytes! # address
   rewardToken: Bytes! # address
   metadataURL: String
 
