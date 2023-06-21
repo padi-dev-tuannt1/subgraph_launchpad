@@ -2,6 +2,7 @@ import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { IDOPool, UserInfo } from "../generated/schema";
 import {
 
+  RefundToken as RefundTokenEvent,
   RefundUser as RefundUserEvent,
   TokensDebt as TokensDebtEvent,
   TokensWithdrawn as TokensWithdrawnEvent,
@@ -71,6 +72,13 @@ export function handleWithdrawETH (event: WithdrawETHEvent): void{
   let idoPool = IDOPool.load(event.address.toHex())
   if(idoPool !== null){
     idoPool.distributed = true
+    idoPool.save()
+  }
+}
+export function handleRefundToken(event: RefundTokenEvent): void{
+  let idoPool = IDOPool.load(event.address.toHex());
+  if(idoPool !== null){
+    idoPool.unsold = BigInt.fromI32(0)
     idoPool.save()
   }
 }

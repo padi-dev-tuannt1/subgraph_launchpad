@@ -32,6 +32,24 @@ export class OwnershipTransferred__Params {
   }
 }
 
+export class RefundToken extends ethereum.Event {
+  get params(): RefundToken__Params {
+    return new RefundToken__Params(this);
+  }
+}
+
+export class RefundToken__Params {
+  _event: RefundToken;
+
+  constructor(event: RefundToken) {
+    this._event = event;
+  }
+
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
 export class RefundUser extends ethereum.Event {
   get params(): RefundUser__Params {
     return new RefundUser__Params(this);
