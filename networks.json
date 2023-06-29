@@ -4,5 +4,29 @@
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       "startBlock": 0
     }
+  },
+  "goerli": {
+    "IDOFactory": {
+      "address": "0x515AD0745AF9BEE8B82D039314e5a50088F01e19",
+      "startBlock": 9214326
+    }
+  },
+  "chapel": {
+    "IDOFactory": {
+      "address": "0x70F35367B03a110286b8c180d7c35f4f11C3B4b4",
+      "startBlock": 30831772
+    }
+  },
+  "mumbai": {
+    "IDOFactory": {
+      "address": "0xb983D772100d519b4e91C15EFF6a10764B601E6F",
+      "startBlock": 37362582
+    }
+  },
+  "fuji": {
+    "IDOFactory": {
+      "address": "0xb983D772100d519b4e91C15EFF6a10764B601E6F",
+      "startBlock": 23599113
+    }
   }
 }
